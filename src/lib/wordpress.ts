@@ -1,5 +1,6 @@
 // src/lib/wordpress.ts
 
+// Logic for the Slideshow on the home page. 
 export async function getSlideshowPosts() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
   const HOME_SLIDE_CATEGORY_ID = '2'; 
@@ -25,5 +26,24 @@ export async function getSlideshowPosts() {
   } catch (error) {
     console.error("WordPress API Error:", error);
     return []; 
+  }
+}
+
+// Logic for changing the headers on the subpages.
+export async function getPageHeader(categoryId: string) {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${categoryId}&per_page=1&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+    
+    if (posts && posts.length > 0) {
+      return posts[0]._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-header.jpg';
+    }
+    return '/default-header.jpg';
+  } catch (error) {
+    return '/default-header.jpg';
   }
 }
