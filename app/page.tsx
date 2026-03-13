@@ -1,13 +1,12 @@
+// this is the home page!!
 import Link from 'next/link';
 import HeroSlideshow from '@/src/components/HeroSlideshow';
 import { getSlideshowPosts } from '@/src/lib/wordpress';
 
 export default async function HomePage() {
   
-  // Error Handling
-  let slides = [];
-
   // Slide show error handling: If fetching fails, set a default slide or leave it empty
+  let slides = [];
   try {
     slides = await getSlideshowPosts();
   } catch (error) {
@@ -30,7 +29,7 @@ export default async function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
-              The adventures you always dreamed about, come to life.
+              Pee pee poo poo.
             </p>
             
             {/* Buttons container */}

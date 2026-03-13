@@ -9,7 +9,7 @@ export async function getSlideshowPosts() {
     // Try catch to fetch posts from WordPress, with error handling for failed fetches
     const res = await fetch(
       `${WP_URL}/posts?categories=${HOME_SLIDE_CATEGORY_ID}&_embed`,
-      { cache: 'no-store', next: { revalidate: 60 } } // clearing cache and revalidating every 60 to update with posts
+      { next: { revalidate: 60 } } 
     );
 
     if (!res.ok) throw new Error("Failed to fetch from WordPress");
@@ -19,7 +19,6 @@ export async function getSlideshowPosts() {
     // Logic for slide show: Extracting post data and featured image URL, with error handling for missing featured images
     return posts.map((post: any) => ({
       id: post.id,
-      // This path is where WordPress hides the Featured Image URL
       image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-slideshow.jpg',
       title: post.title.rendered,
     }));
@@ -45,5 +44,56 @@ export async function getPageHeader(categoryId: string) {
     return '/default-header.jpg';
   } catch (error) {
     return '/default-header.jpg';
+  }
+}
+
+// Logic to change content based on a wordpress "slug" (the html provided by word press editor)
+export async function getPostBySlug(slug: string) {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?slug=${slug}&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+    
+    if (posts && posts.length > 0) {
+      return {
+        title: posts[0].title.rendered,
+        content: posts[0].content.rendered,
+        image: posts[0]._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error fetching post with slug ${slug}:`, error);
+    return null;
+  }
+}
+
+// Logic to fetch all the data for the about page using ACF fields. (no relying on  slugs)
+export async function getAboutPageData(slug: string) {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?slug=${slug}&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+    
+    if (posts && posts.length > 0) {
+      const post = posts[0];
+      return {
+        title: post.title.rendered,
+        intro: post.acf?.intro_text || '',
+        mission: post.acf?.mission_text || '',
+        philosophy: post.acf?.philosophy_text || '',
+        headerImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-header.jpg'
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching ACF data:", error);
+    return null;
   }
 }

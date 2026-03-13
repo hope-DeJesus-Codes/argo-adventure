@@ -3,6 +3,7 @@ import { Metal_Mania, Courier_Prime } from 'next/font/google';
 import Navbar from '@/src/components/Navbar';
 import './globals.css';
 
+// Font configuration
 const metalMania = Metal_Mania({ 
   weight: '400',
   subsets: ['latin'],
@@ -15,6 +16,8 @@ const courierPrime = Courier_Prime({
   variable: '--font-courier-prime',
 });
 
+
+// Root Layout (every page has a nav bar)
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${metalMania.variable} ${courierPrime.variable}`}>

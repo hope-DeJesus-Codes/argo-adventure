@@ -1,3 +1,4 @@
+// EXPEDITION PAGE
 import SubpageHeader from '@/src/components/SubpageHeader';
 import { getPageHeader } from '@/src/lib/wordpress';
 
@@ -14,8 +15,7 @@ export default async function ExpeditionsPage() {
         <div className="prose prose-lg max-w-none font-courier text-gray-800">
           <h2 className="text-3xl mb-6 uppercase font-bold">Upcoming Journeys</h2>
           <p>
-            This is where you will list your various expeditions. 
-            Since it's in a standard container, it will align with your navbar.
+            Gonna add this later :P
           </p>
         </div>
       </section>
