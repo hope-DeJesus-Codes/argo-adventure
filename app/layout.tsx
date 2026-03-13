@@ -1,7 +1,7 @@
 // src/app/layout.tsx
-import { Metal_Mania, Courier_Prime } from 'next/font/google';
-import Navbar from '@/src/components/Navbar';
+import { Metal_Mania, Courier_Prime, Cormorant_SC } from 'next/font/google'; 
 import Footer from '@/src/components/Footer';
+import Navbar from '@/src/components/Navbar';
 import './globals.css';
 
 // Font configuration
@@ -17,6 +17,12 @@ const courierPrime = Courier_Prime({
   variable: '--font-courier-prime',
 });
 
+const cormorantSC = Cormorant_SC({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-cormorant-sc',
+});
+
 // Root Layout (every page has a nav bar, footer)
 export default function RootLayout({
   children,
@@ -26,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* We add the font variables here so they are available throughout the app */}
-      <body className={`${metalMania.variable} ${courierPrime.variable} flex flex-col min-h-screen`}>
+      <body className={`${metalMania.variable} ${courierPrime.variable} ${cormorantSC.variable} flex flex-col min-h-screen`}>
         <Navbar />
         
         {/* 'flex-grow' ensures the footer stays at the bottom even on short pages */}

@@ -16,7 +16,7 @@ export default async function AboutPage() {
           {/* Main Intro */}
           <div className="text-center">
             <h2 className="font-metal text-4xl uppercase mb-6 text-gray-900">
-              We crave adventure, but we also crave meaning.
+              We crave adventure and meaning.
             </h2>
             <p className="font-courier text-lg leading-relaxed text-gray-700 whitespace-pre-line">
               {data.intro}
@@ -25,7 +25,7 @@ export default async function AboutPage() {
 
           <hr className="border-gray-200" />
 
-          {/* Two-Column Detail Section */}
+          {/* Mission and History */}
           <div className="grid md:grid-cols-2 gap-12 font-courier text-gray-600">
             <div>
               <h3 className="font-bold uppercase text-gray-900 mb-4">Our Mission</h3>

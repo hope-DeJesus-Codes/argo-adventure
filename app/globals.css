@@ -1,6 +1,4 @@
 @import "tailwindcss";
-
-/* This links your Google Fonts to Tailwind v4 variables */
 @theme {
   --font-metal: var(--font-metal-mania);
   --font-courier: var(--font-courier-prime);
@@ -9,9 +7,25 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  --font-metal-mania: var(--font-metal-mania);
+  --font-courier-prime: var(--font-courier-prime);
+  
 }
+
+h1{
+  font-family: var(--font-metal-mania), sans-serif;
+}
+
+h2, h3{
+  font-family: var(--font-cormorant-sc), serif;
+  text-transform: uppercase;
+}
+
+
+
 
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-courier-prime);
 }
