@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import { Metal_Mania, Courier_Prime } from 'next/font/google';
 import Navbar from '@/src/components/Navbar';
+import Footer from '@/src/components/Footer';
 import './globals.css';
 
 // Font configuration
@@ -16,14 +17,24 @@ const courierPrime = Courier_Prime({
   variable: '--font-courier-prime',
 });
 
-
-// Root Layout (every page has a nav bar)
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Root Layout (every page has a nav bar, footer)
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${metalMania.variable} ${courierPrime.variable}`}>
-      <body className="antialiased font-courier">
-        <Navbar /> 
-        {children}
+    <html lang="en">
+      {/* We add the font variables here so they are available throughout the app */}
+      <body className={`${metalMania.variable} ${courierPrime.variable} flex flex-col min-h-screen`}>
+        <Navbar />
+        
+        {/* 'flex-grow' ensures the footer stays at the bottom even on short pages */}
+        <main className="flex-grow">
+          {children}
+        </main>
+
+        <Footer />
       </body>
     </html>
   );
