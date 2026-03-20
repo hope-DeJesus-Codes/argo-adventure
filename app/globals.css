@@ -22,10 +22,15 @@ h2, h3{
 }
 
 
-
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-courier-prime);
+}
+
+.prose h2 {
+  font-family: var(--font-cormorant-sc), serif !important;
+}
+.prose p {
+  font-family: var(--font-courier-prime), monospace !important;
 }

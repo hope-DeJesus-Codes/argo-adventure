@@ -4,9 +4,6 @@ import { Mail, Instagram, Music2 } from 'lucide-react';
 export default function Footer() {
   return (
     <footer className="bg-[#251605] text-white font-courier pt-24 pb-16 px-8 md:px-16">
-      {/* Container: max-w-5xl (instead of 7xl) pulls the columns closer together. 
-          flex-row with a fixed gap-24 ensures they are side-by-side but not pushed to edges.
-      */}
       <div className="max-w-3xl mx-auto flex flex-col md:flex-row gap-50">
         
         {/* Left Column: Contact Us */}
@@ -29,23 +26,23 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Right Column: Links (Now Left-Justified, Italic, and Underlined) */}
+        {/* Right Column: Links */}
         <div className="flex flex-col space-y-3 uppercase text-sm tracking-wide flex-1 italic underline">
           <Link href="/" className="hover:opacity-70 transition-opacity">Home</Link>
           <Link href="/expeditions" className="hover:opacity-70 transition-opacity">Expeditions</Link>
           <Link href="/about" className="hover:opacity-70 transition-opacity">About Us</Link>
           <Link href="/faq" className="hover:opacity-70 transition-opacity">FAQ</Link>
           <Link href="/blogs" className="hover:opacity-70 transition-opacity">Blogs</Link>
-          <Link href="/terms" className="hover:opacity-70 transition-opacity">Terms & Conditions</Link>
-          <Link href="/privacy" className="hover:opacity-70 transition-opacity">Privacy Policy</Link>
+          <Link href="/terms-and-conditions" className="hover:opacity-70 transition-opacity">Terms & Conditions</Link>
+          <Link href="/privacy-policy" className="hover:opacity-70 transition-opacity">Privacy Policy</Link>
         </div>
       </div>
 
-      {/* Bottom Line & Copyright (Increased top margin for spacing) */}
+      {/* Bottom Line & Copyright */}
       <div className="max-w-5xl mx-auto mt-40">
         <div className="border-t border-white opacity-50 w-full mb-8"></div>
         <p className="text-center text-sm opacity-50 uppercase tracking-widest">
-          Argos Adventure . EST 2026.
+          Argo Adventure . EST 2026.
         </p>
       </div>
     </footer>
