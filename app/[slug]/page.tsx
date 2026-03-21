@@ -15,7 +15,7 @@ export default async function DynamicPage({ params }: { params: { slug: string }
   }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       {/* Reusing your header component with the WP Featured Image */}
       <SubpageHeader 
         title={post.title} 

@@ -6,7 +6,7 @@ export default async function ExpeditionsPage() {
   const headerImage = await getPageHeader('4');
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen">
       {/* Consistent Header Structure */}
       <SubpageHeader title="Expeditions" headerImage={headerImage} />
 

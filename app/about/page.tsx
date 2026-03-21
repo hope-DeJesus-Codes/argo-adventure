@@ -7,7 +7,7 @@ export default async function AboutPage() {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <main className="min-h-screen bg-[#F9F9F9]">
+    <main className="min-h-screen">
       <SubpageHeader title={data.title} headerImage={data.headerImage} />
 
       <section className="max-w-4xl mx-auto py-20 px-8">

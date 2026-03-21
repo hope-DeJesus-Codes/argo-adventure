@@ -29,7 +29,7 @@ export default async function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
-              Pee pee poo poo.
+              This is a tag line.
             </p>
             
             {/* Buttons container */}
@@ -54,7 +54,7 @@ export default async function HomePage() {
 
       
       {/* Map  */}
-      <section className="py-24 bg-white px-4">
+      <section className="py-24 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6 text-gray-900">Map is gonna be here</h2>
           <p className="text-lg text-gray-600 leading-relaxed">
