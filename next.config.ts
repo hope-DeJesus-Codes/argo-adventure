@@ -10,6 +10,11 @@ const nextConfig = {
         port: '',
         pathname: '/wp-content/uploads/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'argo-adventures-backend.local', // Keep this for your local dev
+        pathname: '/wp-content/uploads/**',
+      },
     ],
     unoptimized: true,
   },
