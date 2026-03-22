@@ -97,3 +97,55 @@ export async function getAboutPageData(slug: string) {
     return null;
   }
 }
+
+// src/lib/wordpress.ts
+
+export async function getBlogsPageData() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    // UPDATED: Changed 'pages' to 'posts' to match your WP setup
+    const res = await fetch(
+      `${WP_URL}/posts?slug=blogs_page&_embed`, 
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+    
+    // Check if the array has our "blogs_page" post
+    if (posts && posts.length > 0) {
+      const post = posts[0];
+      return {
+        title: post.title.rendered,
+        // Pulling from the same ACF field names we used on the About page
+        intro: post.acf?.intro_text || '', 
+        headerImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-header.jpg'
+      };
+    }
+    return null; 
+  } catch (error) {
+    console.error("Error fetching Blogs Page (Post) header data:", error);
+    return null;
+  }
+}
+
+export async function getBlogPosts() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?_embed&filter[category_name]=blog`, 
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+
+    return posts.map((post: any) => ({
+      id: post.id,
+      slug: post.slug,
+      title: post.title.rendered,
+      excerpt: post.excerpt.rendered, 
+      image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-thumbnail.jpg',
+    }));
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+    return [];
+  }
+}
