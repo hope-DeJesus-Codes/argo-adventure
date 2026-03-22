@@ -12,20 +12,17 @@ export default async function BlogPost({ params }: { params: { slug: string } })
   }
 
   return (
-    // bg-transparent ensures the wood texture from globals.css shows through
     <main className="min-h-screen bg-transparent py-24 px-8">
       
-      {/* The "Expedition Log" Layout */}
       <article className="max-w-4xl mx-auto">
         
-        {/* Title without the massive hero header */}
         <h1 className="text-5xl md:text-7xl font-metal text-center text-[#251605] uppercase mb-12">
           {post.title}
         </h1>
 
         {/* Featured Image as an inline piece */}
         {post.image && (
-          <div className="relative w-full aspect-video mb-12 border-4 border-[#251605]">
+          <div className="relative w-full aspect-video mb-12">
             <Image 
               src={post.image} 
               alt={post.title}

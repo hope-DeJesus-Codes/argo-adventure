@@ -98,12 +98,9 @@ export async function getAboutPageData(slug: string) {
   }
 }
 
-// src/lib/wordpress.ts
-
 export async function getBlogsPageData() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
   try {
-    // UPDATED: Changed 'pages' to 'posts' to match your WP setup
     const res = await fetch(
       `${WP_URL}/posts?slug=blogs_page&_embed`, 
       { next: { revalidate: 60 } }
@@ -127,25 +124,51 @@ export async function getBlogsPageData() {
   }
 }
 
+
 export async function getBlogPosts() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
   try {
-    const res = await fetch(
-      `${WP_URL}/posts?_embed&filter[category_name]=blog`, 
+    const catRes = await fetch(`${WP_URL}/categories?slug=blog`);
+    const categories = await catRes.json();
+
+    if (!categories || categories.length === 0) {
+      console.warn("Category 'blog' not found in WordPress.");
+      return [];
+    }
+
+    const blogCategoryId = categories[0].id;
+    const postsRes = await fetch(
+      `${WP_URL}/posts?categories=${blogCategoryId}&_embed&per_page=100`,
       { next: { revalidate: 60 } }
     );
-    const posts = await res.json();
+    const posts = await postsRes.json();
 
-    return posts.map((post: any) => ({
-      id: post.id,
-      slug: post.slug,
-      title: post.title.rendered,
-      excerpt: post.excerpt.rendered, 
-      image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-thumbnail.jpg',
-    }));
+    return posts.map((post: any) => {
+  // 1. Dig into the _embedded data to find the source URL
+  const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
+
+  return {
+    id: post.id,
+    slug: post.slug,
+    title: post.title.rendered,
+    excerpt: post.excerpt.rendered,
+    
+    /* 2. THE LOGIC: 
+       If featuredImage exists, use it. 
+       Otherwise, use your specific local default from /public.
+    */
+    image: featuredImage || '/default-blog-thumbnail.jpg',
+    
+    date: new Date(post.date).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    })
+  };
+});
   } catch (error) {
-    console.error("Error fetching blog posts:", error);
+    console.error("Error in getBlogPosts logic:", error);
     return [];
   }
 }

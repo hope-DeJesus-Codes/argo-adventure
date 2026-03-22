@@ -14,7 +14,6 @@ export default async function BlogsPage() {
 
   return (
     <main className="min-h-screen bg-transparent">
-      {/* Header managed by your friend in the WP 'Blogs' Page */}
       <SubpageHeader 
         title={pageData.title} 
         headerImage={pageData.headerImage} 
@@ -34,7 +33,7 @@ export default async function BlogsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {posts.map((post) => (
             <Link href={`/blogs/${post.slug}`} key={post.id} className="group">
-              <div className="relative aspect-[4/3] overflow-hidden border-2 border-[#251605] mb-4">
+              <div className="relative aspect-[4/3] overflow-hidden mb-4">
                 <Image 
                   src={post.image} 
                   alt={post.title}
