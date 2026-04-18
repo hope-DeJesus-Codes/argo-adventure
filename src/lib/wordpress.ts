@@ -149,26 +149,56 @@ export async function getBlogPosts() {
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
 
   return {
-    id: post.id,
-    slug: post.slug,
-    title: post.title.rendered,
-    excerpt: post.excerpt.rendered,
-    
-    /* 2. THE LOGIC: 
-       If featuredImage exists, use it. 
-       Otherwise, use your specific local default from /public.
-    */
-    image: featuredImage || '/default-blog-thumbnail.jpg',
-    
-    date: new Date(post.date).toLocaleDateString('en-US', {
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric'
-    })
-  };
-});
+      id: post.id,
+      slug: post.slug,
+      title: post.title.rendered,
+      excerpt: post.excerpt.rendered,
+      
+      /* 2. THE LOGIC: 
+        If featuredImage exists, use it. 
+        Otherwise, use your specific local default from /public.
+      */
+      image: featuredImage || '/default-blog-thumbnail.jpg',
+      
+      date: new Date(post.date).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    };
+  });
   } catch (error) {
     console.error("Error in getBlogPosts logic:", error);
+    return [];
+  }
+}
+
+// Logic to fetch FAQ list from WordPress, using a specific "FAQ" category and returning question-answer pairs.
+export async function getFAQList() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    // 1. Get the Category ID for "FAQ"
+    const catRes = await fetch(`${WP_URL}/categories?slug=faq`);
+    const categories = await catRes.json();
+    
+    if (!categories || categories.length === 0) return [];
+    const faqId = categories[0].id;
+
+    // 2. Fetch all posts in that category
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${faqId}&per_page=100&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+
+    return posts.map((post: any) => ({
+      id: post.id,
+      question: post.title.rendered,
+      answer: post.content.rendered,
+    }));
+  } catch (error) {
+    console.error("Error fetching FAQ list:", error);
     return [];
   }
 }
