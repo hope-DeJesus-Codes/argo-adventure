@@ -15,7 +15,7 @@ export default async function ExpeditionsPage() {
         <div className="prose prose-lg max-w-none font-courier text-gray-800">
           <h2 className="text-3xl mb-6 uppercase font-bold">Upcoming Journeys</h2>
           <p>
-            Gonna add this later :P
+            This is a work in progress. Check back soon for details on our upcoming expeditions.
           </p>
         </div>
       </section>

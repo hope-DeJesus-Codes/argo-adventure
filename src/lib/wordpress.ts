@@ -202,3 +202,46 @@ export async function getFAQList() {
     return [];
   }
 }
+
+// Logic to fetch team members from WordPress, using a specific "Team" category and returning name, bio, and photo for each member.
+export async function getTeamPageData() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(`${WP_URL}/posts?slug=team-page&_embed`, { next: { revalidate: 60 } });
+    const posts = await res.json();
+    if (posts && posts.length > 0) {
+      const p = posts[0];
+      return {
+        title: p.title.rendered,
+        intro: p.acf?.intro_text || '',
+        headerImage: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-header.jpg'
+      };
+    }
+    return { title: "The Team", intro: "", headerImage: "/default-header.jpg" };
+  } catch (error) {
+    return { title: "The Team", intro: "", headerImage: "/default-header.jpg" };
+  }
+}
+
+// 2. Fetch Team Members List
+export async function getTeamMembers() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const catRes = await fetch(`${WP_URL}/categories?slug=team`);
+    const categories = await catRes.json();
+    if (!categories || categories.length === 0) return [];
+    
+    const teamId = categories[0].id;
+    const res = await fetch(`${WP_URL}/posts?categories=${teamId}&_embed&per_page=50&orderby=date&order=asc`, { next: { revalidate: 60 } });
+    const posts = await res.json();
+
+    return posts.filter((p: any) => p.slug !== 'team_page').map((post: any) => ({
+      id: post.id,
+      name: post.title.rendered,
+      bio: post.content.rendered,
+      image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-blog-thumbnail.jpg',
+    }));
+  } catch (error) {
+    return [];
+  }
+}
