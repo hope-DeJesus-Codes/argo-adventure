@@ -31,7 +31,7 @@ export default async function BlogsPage() {
 
         {/* The Grid of Posts */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-          {posts.map((post) => (
+          {posts.map((post: any) => (
             <Link href={`/blogs/${post.slug}`} key={post.id} className="group">
               <div className="relative aspect-[4/3] overflow-hidden mb-4">
                 <Image 

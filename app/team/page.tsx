@@ -23,7 +23,7 @@ export default async function TeamPage() {
 
         {/* The Team List */}
         <div className="space-y-32"> {/* Large vertical gap between members */}
-          {members.map((member, index) => (
+          {members.map((member: any, index: any) => (
             <div 
               key={member.id} 
               className={`flex flex-col md:flex-row gap-12 items-center ${

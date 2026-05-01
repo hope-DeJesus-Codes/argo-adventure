@@ -14,7 +14,7 @@ export default async function FAQPage() {
       <section className="max-w-4xl mx-auto py-20 px-8">
         <div className="space-y-12">
           {faqs.length > 0 ? (
-            faqs.map((faq) => (
+            faqs.map((faq : any) => (
               <div key={faq.id} className="border-b border-[#251605]/20 pb-8">
                 <h2 className="faq-question text-3xl font-cormorant text-[#251605] mb-4">
                     {faq.question}
