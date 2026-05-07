@@ -29,7 +29,7 @@ export default async function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
-              This is a tag line.
+              The new Golden Age of Exploration 
             </p>
             
             {/* Buttons container */}
