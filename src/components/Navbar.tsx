@@ -21,7 +21,7 @@ export default function Navbar() {
           <div className="flex-shrink-0">
             <Link 
               href="/" 
-              className="text-4xl uppercase font-metal"
+              className="text-4xl font-metal"
               style={{ fontFamily: 'var(--font-metal-mania)', color: '#ffffff' }}
             >
               Argo Adventure
@@ -34,7 +34,7 @@ export default function Navbar() {
               <Link 
                 key={link.name} 
                 href={link.href}
-                className="text-lg lowercase border-b border-transparent hover:border-gray-300 transition-colors"
+                className="text-2xl lowercase border-b border-transparent hover:border-gray-300 transition-colors"
                 style={{ fontFamily: 'var(--font-courier-prime)', color: '#ffffff' }}
               >
                 {link.name}

@@ -1,55 +1,65 @@
 @import "tailwindcss";
 
+/* 1. Register fonts for Tailwind utility classes (e.g., font-inknut) */
 @theme {
-  --font-metal: var(--font-metal-mania);
-  --font-courier: var(--font-courier-prime);
-  --font-cormorant: var(--font-cormorant-sc);
+  --font-inknut: var(--font-inknut);
+  --font-zen: var(--font-zen);
+  --font-goudy: var(--font-goudy);
+  
+  --color-background-custom: #B5AB86;
+  --color-foreground-custom: #251605;
 }
 
+/* 2. Global Base Styles */
 :root {
-  --background-color: #B5AB86;
-  --foreground: #251605; 
-  
-  --font-metal-mania: var(--font-metal-mania);
-  --font-courier-prime: var(--font-courier-prime);
-  --font-cormorant-sc: var(--font-cormorant-sc);
+  --foreground: #251605;
 }
 
 body {
-
-  background: 
-    linear-gradient(rgba(224, 215, 188, 0.75), rgba(181, 171, 134, 0.75)),
-    url('/wood-texture.jpg'); 
+  /* This scales your Goudy font size globally */
+  font-size: 25px; 
+  line-height: 1.7;
+  font-family: var(--font-goudy), serif;
+  color: var(--foreground);
+  min-height: 100vh;
   
+  /* Background Logic */
+  background: 
+    linear-gradient(rgba(224, 215, 188, 0.75), rgba(207, 198, 165, 0.75)),
+    url('/wood-texture.jpg'); 
   background-attachment: fixed; 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   background-color: #B5AB86;
-  
-  color: var(--foreground);
-  font-family: var(--font-courier-prime);
-  min-height: 100vh;
 }
 
-h1{
-  font-family: var(--font-metal-mania), sans-serif;
+/* 3. Global Typography Routing */
+h1 {
+  font-family: var(--font-inknut), serif;
 }
 
-h2, h3{
-  font-family: var(--font-cormorant-sc), serif;
+h2, h3 {
+  font-family: var(--font-zen), serif;
   text-transform: uppercase;
 }
 
-.prose h2 {
-  font-family: var(--font-cormorant-sc), serif !important;
-}
-.prose p {
-  font-family: var(--font-courier-prime), monospace !important;
+p {
+  margin-bottom: 1.5rem; /* Adds nice spacing between paragraphs */
 }
 
-/* FAQ style stuff */
+/* 4. Prose (WordPress Content) Specifics */
+.prose h2 {
+  font-family: var(--font-zen), serif !important;
+  font-size: 1.8rem;
+}
+
+.prose p {
+  font-family: var(--font-goudy), serif !important;
+  font-size: 1.5rem; 
+}
+
+/* FAQ style */
 .faq-question::before {
   content: "+";
   display: inline-block;

@@ -24,11 +24,11 @@ export default async function HomePage() {
         {/* Inner Container */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 pt-20"> 
           <div className="max-w-4xl text-left">
-            <h1 className="text-6xl md:text-9xl font-metal uppercase mb-4 text-[#FFFFFF] leading-none">
+            <h1 className="text-6xl md:text-8xl font-inknut mb-4 text-[#FFFFFF] leading-none">
               Argo Adventure
             </h1>
             
-            <p className="text-xl md:text-2xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
+            <p className="text-xl md:text-4xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
               The new <i>Golden Age</i> of Exploration 
             </p>
             
@@ -36,7 +36,7 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 font-courier">
               <Link 
                 href="/expeditions" 
-                className="bg-[#688e83] hover:opacity-90 text-white px-10 py-4 text-lg transition-all text-center rounded-[17px]"
+                className="bg-[#688e83] hover:opacity-90 text-white px-10 py-4 text-2xl transition-all text-center rounded-[17px]"
               >
                 expeditions
               </Link>

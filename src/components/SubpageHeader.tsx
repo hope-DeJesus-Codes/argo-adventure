@@ -21,7 +21,7 @@ export default function SubpageHeader({ title, headerImage }: SubpageHeaderProps
 
       {/* Title Overlay */}
       <div className="relative z-10 text-center">
-        <h1 className="text-5xl md:text-7xl font-metal uppercase text-white tracking-widest drop-shadow-lg">
+        <h1 className="text-5xl md:text-7xl font-metal text-white tracking-widest drop-shadow-lg">
           {title}
         </h1>
       </div>

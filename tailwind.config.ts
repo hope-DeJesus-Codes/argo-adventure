@@ -1,3 +1,4 @@
+//tailwind.congig.ts  
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -9,8 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        metal: ['var(--font-metal-mania)'],
-        courier: ['var(--font-courier-prime)'],
+        inknut: ['var(--font-inknut)', 'serif'],
+        zen: ['var(--font-zen)', 'serif'],
+        goudy: ['var(--font-goudy)', 'serif'],
+
+        /* mapping the old fonts to the new ones */
+        metal: ['var(--font-inknut)'],
+        courier: ['var(--font-goudy)'],
       },
     },
   },

@@ -1,26 +1,25 @@
 // src/app/layout.tsx
-import { Metal_Mania, Courier_Prime, Cormorant_SC } from 'next/font/google'; 
-import Footer from '@/src/components/Footer';
+import { Inknut_Antiqua, Zen_Antique, Goudy_Bookletter_1911 } from 'next/font/google';import Footer from '@/src/components/Footer';
 import Navbar from '@/src/components/Navbar';
 import './globals.css';
 
 // Font configuration
-const metalMania = Metal_Mania({ 
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-metal-mania', 
+const inknut = Inknut_Antiqua({ 
+  subsets: ['latin'], 
+  weight: ['400', '700'], 
+  variable: '--font-inknut' 
 });
 
-const courierPrime = Courier_Prime({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-courier-prime',
+const zen = Zen_Antique({ 
+  subsets: ['latin'], 
+  weight: ['400'], 
+  variable: '--font-zen' 
 });
 
-const cormorantSC = Cormorant_SC({
-  weight: ['400', '700'],
-  subsets: ['latin'],
-  variable: '--font-cormorant-sc',
+const goudy = Goudy_Bookletter_1911({ 
+  subsets: ['latin'], 
+  weight: ['400'], 
+  variable: '--font-goudy' 
 });
 
 // Root Layout (every page has a nav bar, footer)
@@ -31,15 +30,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* We add the font variables here so they are available throughout the app */}
-      <body className={`${metalMania.variable} ${courierPrime.variable} ${cormorantSC.variable} flex flex-col min-h-screen`}>
-        <Navbar />
-        
-        {/* 'flex-grow' ensures the footer stays at the bottom even on short pages */}
+      <body className={`${inknut.variable} ${zen.variable} ${goudy.variable} flex flex-col min-h-screen`}>
+        <Navbar />        
         <main className="flex-grow">
           {children}
         </main>
-
         <Footer />
       </body>
     </html>
