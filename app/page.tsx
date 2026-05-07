@@ -29,7 +29,7 @@ export default async function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
-              The new Golden Age of Exploration 
+              The new <i>Golden Age</i> of Exploration 
             </p>
             
             {/* Buttons container */}
@@ -40,30 +40,10 @@ export default async function HomePage() {
               >
                 expeditions
               </Link>
-              
-              <Link 
-                href="/interest-form" 
-                className="bg-[#688e83] hover:opacity-90 text-white px-10 py-4 text-lg transition-all text-center rounded-[17px]"
-              >
-                interest form
-              </Link>
             </div>
           </div>
         </div>
       </section>
-
-      
-      {/* Map  */}
-      <section className="py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6 text-gray-900">Map is gonna be here</h2>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            There will be a map here and you can hover on a pin.
-          </p>
-        </div>
-      </section>
-
-
     </main>
   );
 }

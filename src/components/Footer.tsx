@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { Mail, Instagram, Music2 } from 'lucide-react';
+import { SiInstagram, SiTiktok, SiReddit, SiBluesky } from "react-icons/si";
+import { HiOutlineMail } from "react-icons/hi";
 
 export default function Footer() {
   return (
@@ -11,18 +12,26 @@ export default function Footer() {
           <h2 className="text-[36px] font-bold italic uppercase leading-none tracking-tighter">
             CONTACT US
           </h2>
-          <p className="text-lg">Email: theemail@gmail.com</p>
+          <p className="text-lg">Email: info@argoadventuretours.com</p>
           
-          <div className="flex gap-6 mt-2">
-            <Link href="#" className="hover:opacity-70 transition-opacity">
-              <Instagram size={24} />
-            </Link>
-            <Link href="#" className="hover:opacity-70 transition-opacity">
-              <Music2 size={24} />
-            </Link>
-            <Link href="mailto:theemail@gmail.com" className="hover:opacity-70 transition-opacity">
-              <Mail size={24} />
-            </Link>
+          <div className="flex flex-col space-y-6 flex-1">
+            <div className="flex gap-6 mt-2">
+              <Link href="https://www.instagram.com/argoadventuretours/" target="_blank" className="hover:opacity-70 transition-opacity">
+                <SiInstagram size={24} />
+              </Link>
+              <Link href="https://www.tiktok.com/@argoadventuretours" target="_blank" className="hover:opacity-70 transition-opacity">
+                <SiTiktok size={24} />
+              </Link>
+              <Link href="https://www.reddit.com/user/Argo-Adventures/" target="_blank" className="hover:opacity-70 transition-opacity">
+                <SiReddit size={24} />
+              </Link>
+              <Link href="https://bsky.app/profile/argoadventures.bsky.social" target="_blank" className="hover:opacity-70 transition-opacity">
+                <SiBluesky size={24} />
+              </Link>
+              <Link href="mailto:info@argoadventuretours.com" className="hover:opacity-70 transition-opacity">
+                <HiOutlineMail size={26} />
+              </Link>
+            </div>
           </div>
         </div>
 
