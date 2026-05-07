@@ -112,7 +112,6 @@ export async function getBlogsPageData() {
       const post = posts[0];
       return {
         title: post.title.rendered,
-        // Pulling from the same ACF field names we used on the About page
         intro: post.acf?.intro_text || '', 
         headerImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-header.jpg'
       };
@@ -203,6 +202,77 @@ export async function getFAQList() {
   }
 }
 
+// Logic to get FAQ posts and associate it with a category
+export async function getGroupedFAQs() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  // The categories we expect. We use these to guarantee the order on the page.
+  const expectedCategories = [
+    "Expeditions",
+    "Registration",
+    "Meals & Accommodations",
+    "Flights, Travel, Packing",
+    "Health & Safety"
+  ];
+
+  try {
+    // 1. Fetch all categories to build an ID-to-Name map
+    const catRes = await fetch(`${WP_URL}/categories?per_page=100`);
+    const allCategories = await catRes.json();
+    
+    const categoryMap: Record<number, string> = {};
+    let parentFaqId = null;
+
+    allCategories.forEach((cat: any) => {
+      categoryMap[cat.id] = cat.name;
+      // We also want to find the main "FAQ" category ID just in case
+      if (cat.slug === 'faq') parentFaqId = cat.id; 
+    });
+
+    // 2. Fetch the posts
+    // We fetch posts that belong to the FAQ category (or just fetch all if you only use WP for this)
+    const postUrl = parentFaqId 
+      ? `${WP_URL}/posts?categories=${parentFaqId}&per_page=100&_embed`
+      : `${WP_URL}/posts?per_page=100&_embed`;
+
+    const res = await fetch(postUrl, { next: { revalidate: 60 } });
+    const posts = await res.json();
+
+    // 3. Initialize our empty buckets
+    const groupedData: Record<string, any[]> = {};
+    expectedCategories.forEach(cat => {
+      groupedData[cat] = [];
+    });
+
+    // 4. Sort posts into their buckets
+    posts.forEach((post: any) => {
+      // Find which of the post's category IDs matches our expected subcategories
+      const postCategoryNames = post.categories.map((id: number) => categoryMap[id]);
+      
+      const matchedCategory = expectedCategories.find(expected => 
+        postCategoryNames.includes(expected)
+      );
+
+      if (matchedCategory) {
+        groupedData[matchedCategory].push({
+          id: post.id,
+          question: post.title.rendered,
+          answer: post.content.rendered,
+        });
+      }
+    });
+
+    return expectedCategories.map(category => ({
+      categoryName: category,
+      questions: groupedData[category]
+    }));
+
+  } catch (error) {
+    console.error("Error fetching grouped FAQs:", error);
+    return [];
+  }
+}
+
 // Logic to fetch team members from WordPress, using a specific "Team" category and returning name, bio, and photo for each member.
 export async function getTeamPageData() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
@@ -223,7 +293,7 @@ export async function getTeamPageData() {
   }
 }
 
-// 2. Fetch Team Members List
+// Fetch Team Members List
 export async function getTeamMembers() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
   try {

@@ -45,7 +45,7 @@ export default async function BlogsPage() {
                 {post.title}
               </h2>
               <div 
-                className="text-sm font-courier line-clamp-2 opacity-80"
+                className="text-lg font-courier line-clamp-2 opacity-85"
                 dangerouslySetInnerHTML={{ __html: post.excerpt }}
               />
             </Link>
