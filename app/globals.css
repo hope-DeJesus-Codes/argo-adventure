@@ -58,13 +58,3 @@ p {
   font-family: var(--font-goudy), serif !important;
   font-size: 1.5rem; 
 }
-
-/* FAQ style */
-.faq-question::before {
-  content: "+";
-  display: inline-block;
-  margin-right: 15px;
-  color: #251605;
-  font-weight: bold;
-  opacity: 0.6;
-}
