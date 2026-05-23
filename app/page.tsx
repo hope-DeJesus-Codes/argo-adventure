@@ -24,12 +24,12 @@ export default async function HomePage() {
         {/* Inner Container */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 pt-20"> 
           <div className="max-w-4xl text-left">
-            <h1 className="text-6xl md:text-8xl font-inknut mb-4 text-[#FFFFFF] leading-none">
-              Argo Adventure
+            <h1 className="text-6xl md:text-7xl font-inknut mb-4 text-[#FFFFFF] leading-none">
+              Argo Adventures
             </h1>
             
             <p className="text-xl md:text-4xl font-courier text-[#FFFFFF] mb-8 max-w-xl leading-relaxed">
-              The new <i>Golden Age</i> of Exploration 
+              The new Golden Age of Exploration 
             </p>
             
             {/* Buttons container */}

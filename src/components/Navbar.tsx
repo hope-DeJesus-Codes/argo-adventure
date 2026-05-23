@@ -17,14 +17,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-baseline">
           
-          {/* Brand - ARGO ADVENTURE - Metal Mania Font */}
+          {/* Brand - ARGO ADVENTUREs - Metal Mania Font */}
           <div className="flex-shrink-0">
             <Link 
               href="/" 
               className="text-4xl font-metal"
               style={{ fontFamily: 'var(--font-metal-mania)', color: '#ffffff' }}
             >
-              Argo Adventure
+              Argo Adventures
             </Link>
           </div>
 

@@ -13,8 +13,6 @@ const config: Config = {
         inknut: ['var(--font-inknut)', 'serif'],
         zen: ['var(--font-zen)', 'serif'],
         goudy: ['var(--font-goudy)', 'serif'],
-
-        /* mapping the old fonts to the new ones */
         metal: ['var(--font-inknut)'],
         courier: ['var(--font-goudy)'],
       },

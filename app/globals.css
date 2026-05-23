@@ -45,10 +45,20 @@ h2, h3 {
 }
 
 p {
-  margin-bottom: 1.5rem; /* Adds nice spacing between paragraphs */
+  margin-bottom: 1.5rem;
 }
 
-/* 4. Prose (WordPress Content) Specifics */
+/* 4. Headless WordPress Sizing Override */
+
+/* 
+  If any element inside the WordPress prose content has an inline style 
+  containing "font-size", unset the Tailwind constraints and let the 
+  browser read the exact style your friend selected.
+*/
+.prose [style*="font-size"] {
+  font-size: unset !important;
+}
+
 .prose h2 {
   font-family: var(--font-zen), serif !important;
   font-size: 1.8rem;
@@ -56,5 +66,4 @@ p {
 
 .prose p {
   font-family: var(--font-goudy), serif !important;
-  font-size: 1.5rem; 
 }
