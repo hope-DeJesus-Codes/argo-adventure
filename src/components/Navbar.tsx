@@ -18,14 +18,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="flex justify-between items-center w-full">
           
-          {/* Brand - ARGO ADVENTUREs Logo */}
+          {/* ARGO ADVENTUREs Logo */}
           <div className="flex-shrink-0">
             <Link href="/" className="block">
               <Image 
                 src="/Argo_Adventures_Logo_White.png" 
                 alt="Argo Adventures Logo"
-                width={250}   // Adjust width as needed to fit your navbar design
-                height={50}   // Adjust height as needed to keep your image aspect ratio
+                width={250}  
+                height={50}  
                 priority      
                 className="w-auto h-16 md:h-20 object-contain display-block"
               />
@@ -45,7 +45,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Mobile Menu Toggle (remains black) */}
+          {/* Mobile Menu Toggle */}
           <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-[#ffffff]">
               <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown (Matches Courier Prime style) */}
+      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-md absolute w-full left-0 py-6 px-8 border-b border-black">
           {navLinks.map((link) => (

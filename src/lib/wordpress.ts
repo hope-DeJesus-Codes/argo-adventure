@@ -205,8 +205,6 @@ export async function getFAQList() {
 // Logic to get FAQ posts and associate it with a category
 export async function getGroupedFAQs() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-
-  // The categories we expect. We use these to guarantee the order on the page.
   const expectedCategories = [
     "Expeditions",
     "Registration",
@@ -312,6 +310,43 @@ export async function getTeamMembers() {
       image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-blog-thumbnail.jpg',
     }));
   } catch (error) {
+    return [];
+  }
+}
+
+export async function getExpeditions() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    // 1. Get the Category ID for "expedition"
+    const catRes = await fetch(`${WP_URL}/categories?slug=expedition`);
+    const categories = await catRes.json();
+    
+    if (!categories || categories.length === 0) return [];
+    const expId = categories[0].id;
+
+    // 2. Fetch posts in that category, embedding featured images and tags
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${expId}&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+
+    return posts.map((post: any) => {
+      // Extract the first tag name to use as the Status badge
+      const statusTag = post._embedded?.['wp:term']?.[1]?.[0]?.name || 'Coming Soon';      
+      const rawExcerpt = post.excerpt.rendered.replace(/<[^>]+>/g, '');
+
+      return {
+        slug: post.slug,
+        title: post.title.rendered,
+        dates: rawExcerpt,
+        status: statusTag,
+        image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-expedition-thumbnail.jpg',
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching expeditions:", error);
     return [];
   }
 }
