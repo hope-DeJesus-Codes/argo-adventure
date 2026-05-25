@@ -314,6 +314,32 @@ export async function getTeamMembers() {
   }
 }
 
+
+
+export async function getExpeditionsPageData() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?slug=expeditions-page&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+   
+    if (posts && posts.length > 0) {
+      const post = posts[0];
+      return {
+        title: post.title.rendered,
+        intro: post.acf?.intro_text || '',
+        headerImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-expedition-thumbnail.jpg'
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching Expeditions Page header data:", error);
+    return null;
+  }
+}
+
 export async function getExpeditions() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
@@ -350,3 +376,4 @@ export async function getExpeditions() {
     return [];
   }
 }
+
