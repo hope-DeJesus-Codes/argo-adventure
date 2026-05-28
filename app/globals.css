@@ -49,12 +49,6 @@ p {
 }
 
 /* 4. Headless WordPress Sizing Override */
-
-/* 
-  If any element inside the WordPress prose content has an inline style 
-  containing "font-size", unset the Tailwind constraints and let the 
-  browser read the exact style your friend selected.
-*/
 .prose [style*="font-size"] {
   font-size: unset !important;
 }
@@ -66,4 +60,31 @@ p {
 
 .prose p {
   font-family: var(--font-goudy), serif !important;
+}
+
+
+/* Antique Map Filter Layer Override */
+.antique-map-tiles .leaflet-tile-container img {
+filter: sepia(0.95) contrast(1.1) brightness(0.88) hue-rotate(-15deg) saturate(0.75) !important;
+}
+
+/* Remove default clean style boundaries from Leaflet's engine */
+.leaflet-tooltip.custom-antique-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip-top.custom-antique-tooltip:before {
+  border-top-color: #1a4a46 !important;
+}
+
+/* Custom Pin Hover Micro-animations */
+.leaflet-marker-icon {
+  filter: sepia(0.3) hue-rotate(15deg) saturate(1.2) brightness(0.7);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.leaflet-marker-icon:hover {
+  filter: sepia(0) saturate(1.8) brightness(1) drop-shadow(0px 10px 8px rgba(0,0,0,0.4));
 }

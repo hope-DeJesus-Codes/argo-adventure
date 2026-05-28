@@ -377,3 +377,48 @@ export async function getExpeditions() {
   }
 }
 
+
+// MAP LOGIC
+export async function getMapExpeditions() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    // 1. Fetch categories to discover the numeric ID for both "expeditions" and "map"
+    const catRes = await fetch(`${WP_URL}/categories?per_page=100`);
+    const categories = await catRes.json();
+    
+    const expCat = categories.find((c: any) => c.slug === 'expeditions');
+    const mapCat = categories.find((c: any) => c.slug === 'map');
+
+    if (!expCat) return [];
+
+    // 2. Fetch posts belonging to the expeditions category
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${expCat.id}&_embed&per_page=100`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+
+    // 3. Filter and parse only the items that have the Map category active
+    return posts
+      .filter((post: any) => !mapCat || post.categories.includes(mapCat.id))
+      .map((post: any) => {
+        // Extract latitude and longitude from custom fields or ACF
+        const lat = parseFloat(post.acf?.latitude || post.meta?.latitude || 0);
+        const lng = parseFloat(post.acf?.longitude || post.meta?.longitude || 0);
+        const rawExcerpt = post.excerpt.rendered.replace(/<[^>]+>/g, '');
+
+        return {
+          title: post.title.rendered,
+          slug: post.slug,
+          dates: rawExcerpt,
+          image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/wood-texture.jpg',
+          coordinates: [lat, lng] as [number, number],
+        };
+      })
+      .filter((exp: any) => exp.coordinates[0] !== 0 && exp.coordinates[1] !== 0); // Ignore broken coords
+  } catch (error) {
+    console.error("Error building map coordinates data layer:", error);
+    return [];
+  }
+}
