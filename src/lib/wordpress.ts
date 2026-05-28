@@ -383,30 +383,42 @@ export async function getMapExpeditions() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
 
   try {
-    // 1. Fetch categories to discover the numeric ID for both "expeditions" and "map"
     const catRes = await fetch(`${WP_URL}/categories?per_page=100`);
     const categories = await catRes.json();
     
-    const expCat = categories.find((c: any) => c.slug === 'expeditions');
+    const expCat = categories.find((c: any) => c.slug === 'expedition');
     const mapCat = categories.find((c: any) => c.slug === 'map');
 
-    if (!expCat) return [];
+    console.log("--- MAP DIAGNOSTICS: CATEGORY MATCHES ---");
+    console.log("Expedition Cat ID:", expCat?.id);
+    console.log("Map Cat ID:", mapCat?.id);
 
-    // 2. Fetch posts belonging to the expeditions category
+    if (!expCat) {
+      console.warn("CRITICAL: 'expedition' category slug not found in WordPress!");
+      return [];
+    }
+
     const res = await fetch(
       `${WP_URL}/posts?categories=${expCat.id}&_embed&per_page=100`,
-      { next: { revalidate: 60 } }
+      { next: { revalidate: 1 } } // Temorarily dropped to 1 second to bypass Next.js caching while debugging
     );
     const posts = await res.json();
 
-    // 3. Filter and parse only the items that have the Map category active
-    return posts
-      .filter((post: any) => !mapCat || post.categories.includes(mapCat.id))
+    console.log(`Found ${posts.length} total posts inside the 'expedition' category.`);
+
+    const mappedData = posts
+      .filter((post: any) => {
+        const hasMapCategory = !mapCat || post.categories.includes(mapCat.id);
+        console.log(`Post: "${post.title.rendered}" -> Has 'Map' Category Checked?`, hasMapCategory);
+        return hasMapCategory;
+      })
       .map((post: any) => {
-        // Extract latitude and longitude from custom fields or ACF
-        const lat = parseFloat(post.acf?.latitude || post.meta?.latitude || 0);
-        const lng = parseFloat(post.acf?.longitude || post.meta?.longitude || 0);
-        const rawExcerpt = post.excerpt.rendered.replace(/<[^>]+>/g, '');
+        // Log exactly what WordPress is returning inside the ACF object
+        console.log(`Raw ACF data for "${post.title.rendered}":`, post.acf);
+
+        const lat = parseFloat(post.acf?.latitude);
+        const lng = parseFloat(post.acf?.longitude);
+        const rawExcerpt = post.excerpt?.rendered ? post.excerpt.rendered.replace(/<[^>]+>/g, '') : '';
 
         return {
           title: post.title.rendered,
@@ -416,7 +428,21 @@ export async function getMapExpeditions() {
           coordinates: [lat, lng] as [number, number],
         };
       })
-      .filter((exp: any) => exp.coordinates[0] !== 0 && exp.coordinates[1] !== 0); // Ignore broken coords
+      // FIXED VALIDATION: Explicitly filters out zeroes AND invalid NaN items
+      .filter((exp: any) => {
+        const isValid = 
+          !isNaN(exp.coordinates[0]) && 
+          !isNaN(exp.coordinates[1]) && 
+          exp.coordinates[0] !== 0 && 
+          exp.coordinates[1] !== 0;
+        
+        console.log(`Expedition "${exp.title}" Coordinates:`, exp.coordinates, `-> Passing validation?`, isValid);
+        return isValid;
+      });
+
+    console.log("--- FINAL TRANSFORMED DATA SENDING TO MAP ---", mappedData);
+    return mappedData;
+
   } catch (error) {
     console.error("Error building map coordinates data layer:", error);
     return [];

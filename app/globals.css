@@ -65,7 +65,7 @@ p {
 
 /* Antique Map Filter Layer Override */
 .antique-map-tiles .leaflet-tile-container img {
-filter: sepia(0.95) contrast(1.1) brightness(0.88) hue-rotate(-15deg) saturate(0.75) !important;
+filter: sepia(0) contrast(1.1) brightness(0.88) hue-rotate(-15deg) saturate(0.75) !important;
 }
 
 /* Remove default clean style boundaries from Leaflet's engine */
