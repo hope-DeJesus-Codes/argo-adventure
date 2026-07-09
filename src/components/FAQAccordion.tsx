@@ -69,7 +69,7 @@ export default function FAQAccordion({ groupedFaqs }: { groupedFaqs: FAQCategory
                             onClick={() => toggleQuestion(faq.id)}
                             className="w-full flex justify-between items-start py-5 text-left hover:text-[#251605]/70 transition-colors"
                           >
-                            <p className="text-xl md:text-3xl font-goudy pr-8">
+                            <p className="text-xl md:text-2xl font-goudy pr-8">
                               {faq.question}
                             </p>
                             <span className="mt-1 flex-shrink-0 text-[#251605]/60">

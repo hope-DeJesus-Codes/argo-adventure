@@ -62,6 +62,7 @@ export async function getPostBySlug(slug: string) {
         title: posts[0].title.rendered,
         content: posts[0].content.rendered,
         image: posts[0]._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
+        bookingUrl: posts[0].acf?.booking_url || null,
       };
     }
     return null;
@@ -205,8 +206,6 @@ export async function getFAQList() {
 // Logic to get FAQ posts and associate it with a category
 export async function getGroupedFAQs() {
   const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
-
-  // The categories we expect. We use these to guarantee the order on the page.
   const expectedCategories = [
     "Expeditions",
     "Registration",
@@ -312,6 +311,141 @@ export async function getTeamMembers() {
       image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-blog-thumbnail.jpg',
     }));
   } catch (error) {
+    return [];
+  }
+}
+
+
+
+export async function getExpeditionsPageData() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+  try {
+    const res = await fetch(
+      `${WP_URL}/posts?slug=expeditions-page&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+   
+    if (posts && posts.length > 0) {
+      const post = posts[0];
+      return {
+        title: post.title.rendered,
+        intro: post.acf?.intro_text || '',
+        headerImage: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-expedition-thumbnail.jpg'
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching Expeditions Page header data:", error);
+    return null;
+  }
+}
+
+export async function getExpeditions() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    // 1. Get the Category ID for "expedition"
+    const catRes = await fetch(`${WP_URL}/categories?slug=expedition`);
+    const categories = await catRes.json();
+    
+    if (!categories || categories.length === 0) return [];
+    const expId = categories[0].id;
+
+    // 2. Fetch posts in that category, embedding featured images and tags
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${expId}&_embed`,
+      { next: { revalidate: 60 } }
+    );
+    const posts = await res.json();
+
+    return posts.map((post: any) => {
+      // Extract the first tag name to use as the Status badge
+      const statusTag = post._embedded?.['wp:term']?.[1]?.[0]?.name || 'Coming Soon';      
+      const rawExcerpt = post.excerpt.rendered.replace(/<[^>]+>/g, '');
+
+      return {
+        slug: post.slug,
+        title: post.title.rendered,
+        dates: rawExcerpt,
+        status: statusTag,
+        image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/default-expedition-thumbnail.jpg',
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching expeditions:", error);
+    return [];
+  }
+}
+
+
+// MAP LOGIC
+export async function getMapExpeditions() {
+  const WP_URL = process.env.NEXT_PUBLIC_WORDPRESS_URL;
+
+  try {
+    const catRes = await fetch(`${WP_URL}/categories?per_page=100`);
+    const categories = await catRes.json();
+    
+    const expCat = categories.find((c: any) => c.slug === 'expedition');
+    const mapCat = categories.find((c: any) => c.slug === 'map');
+
+    console.log("--- MAP DIAGNOSTICS: CATEGORY MATCHES ---");
+    console.log("Expedition Cat ID:", expCat?.id);
+    console.log("Map Cat ID:", mapCat?.id);
+
+    if (!expCat) {
+      console.warn("CRITICAL: 'expedition' category slug not found in WordPress!");
+      return [];
+    }
+
+    const res = await fetch(
+      `${WP_URL}/posts?categories=${expCat.id}&_embed&per_page=100`,
+      { next: { revalidate: 1 } } // Temorarily dropped to 1 second to bypass Next.js caching while debugging
+    );
+    const posts = await res.json();
+
+    console.log(`Found ${posts.length} total posts inside the 'expedition' category.`);
+
+    const mappedData = posts
+      .filter((post: any) => {
+        const hasMapCategory = !mapCat || post.categories.includes(mapCat.id);
+        console.log(`Post: "${post.title.rendered}" -> Has 'Map' Category Checked?`, hasMapCategory);
+        return hasMapCategory;
+      })
+      .map((post: any) => {
+        // Log exactly what WordPress is returning inside the ACF object
+        console.log(`Raw ACF data for "${post.title.rendered}":`, post.acf);
+
+        const lat = parseFloat(post.acf?.latitude);
+        const lng = parseFloat(post.acf?.longitude);
+        const rawExcerpt = post.excerpt?.rendered ? post.excerpt.rendered.replace(/<[^>]+>/g, '') : '';
+
+        return {
+          title: post.title.rendered,
+          slug: post.slug,
+          dates: rawExcerpt,
+          image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/wood-texture.jpg',
+          coordinates: [lat, lng] as [number, number],
+        };
+      })
+      // FIXED VALIDATION: Explicitly filters out zeroes AND invalid NaN items
+      .filter((exp: any) => {
+        const isValid = 
+          !isNaN(exp.coordinates[0]) && 
+          !isNaN(exp.coordinates[1]) && 
+          exp.coordinates[0] !== 0 && 
+          exp.coordinates[1] !== 0;
+        
+        console.log(`Expedition "${exp.title}" Coordinates:`, exp.coordinates, `-> Passing validation?`, isValid);
+        return isValid;
+      });
+
+    console.log("--- FINAL TRANSFORMED DATA SENDING TO MAP ---", mappedData);
+    return mappedData;
+
+  } catch (error) {
+    console.error("Error building map coordinates data layer:", error);
     return [];
   }
 }
