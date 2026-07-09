@@ -62,6 +62,7 @@ export async function getPostBySlug(slug: string) {
         title: posts[0].title.rendered,
         content: posts[0].content.rendered,
         image: posts[0]._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
+        bookingUrl: posts[0].acf?.booking_url || null,
       };
     }
     return null;

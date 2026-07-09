@@ -70,16 +70,26 @@ export default function AntiqueMap({ expeditions }: { expeditions: ExpeditionMar
                 }
               }}
             >
-              <Tooltip direction="top" offset={[0, -20]} opacity={1} className="custom-antique-tooltip">
-                <div className="w-64 p-2 bg-[#fcf5e3] border-2 border-[#4a321a] rounded shadow-xl font-goudy text-[#251605]">
-                  <div className="relative w-full h-32 mb-2 rounded overflow-hidden border border-[#251605]/30">
+              <Tooltip direction="top" offset={[0, -15]} opacity={1} className="custom-antique-tooltip">
+                <div className="w-52 p-1.5 bg-[#fcf5e3] rounded-md shadow-2xl font-goudy text-[#251605]">
+                  
+                  <div className="relative w-full h-32 mb-1.5 rounded overflow-hidden border border-[#251605]/20">
                     <img src={exp.image} alt={exp.title} className="w-full h-full object-cover" />
                   </div>
-                  <h4 className="font-zen uppercase text-sm tracking-wide border-b border-[#4a321a]/30 pb-1 mb-1 font-bold">
+                  
+                  <h4 className="font-zen uppercase text-xs tracking-wider border-b border-[#4a321a]/20 pb-0.5 mb-0.5 font-bold truncate">
                     {exp.title}
                   </h4>
-                  <p className="text-xs italic text-[#251605]/80">{exp.dates}</p>
-                  <p className="text-[10px] text-right text-[#b38646] uppercase tracking-widest font-zen mt-2">Click to Explore →</p>
+                  
+                  <div className="flex items-center justify-between mt-1 text-[10px]">
+                    <span className="italic text-[#251605]/70 font-medium">{exp.dates}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-1 text-[10px]">
+                    <span className="text-[#b38646] uppercase font-zen font-semibold tracking-wider text-[9px]">Click to Explore</span>
+                  </div>
+
+
                 </div>
               </Tooltip>
             </Marker>
