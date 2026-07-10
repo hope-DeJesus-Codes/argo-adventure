@@ -18,21 +18,8 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen">
-<<<<<<< HEAD
-       
-       {/* Pop up*/}
-        <Script 
-          id="mcjs"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/fd1c007e515d187bb46a0138b/847b505a9ca8570e1e0507b24.js");`
-          }}
-        />
-        
-=======
       
       {/* SECTION 1: HERO BANNER */}
->>>>>>> feature/expedition-page
       <section className="relative h-[85vh] flex items-center justify-start overflow-hidden">
         
         {/* Slideshow background */}
