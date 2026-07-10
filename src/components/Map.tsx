@@ -31,14 +31,10 @@ function MapController({ markers }: { markers: ExpeditionMarker[] }) {
 }
 
 export default function AntiqueMap({ expeditions }: { expeditions: ExpeditionMarker[] }) {
-  // Define strict world bounds so the map cannot be dragged endlessly into blank space
   const worldBounds = L.latLngBounds([[-90, -180], [90, 180]]);
 
   return (
-    /* Removed border-y-4 border-[#251605] and added a smooth rounded layout radius */
-    <div className="relative w-full h-[600px] bg-[#ebdcb9] overflow-hidden shadow-lg group rounded-xl">
-      
-      {/* Changed bg-repeat to bg-cover to stop the paper texture from creating an ugly repeating grid pattern */}
+    <div className="relative w-full h-[600px] bg-[#ebdcb9] overflow-hidden shadow-lg group rounded-xl">      
       <div className="absolute inset-0 z-[400] pointer-events-none mix-blend-multiply opacity-35 bg-[url('/paper-texture.jpg')] bg-cover bg-center" />
       <div className="absolute inset-0 z-[401] pointer-events-none bg-radial-vignette shadow-[inset_0_0_100px_rgba(37,22,5,0.5)]" />
 
@@ -52,7 +48,6 @@ export default function AntiqueMap({ expeditions }: { expeditions: ExpeditionMar
           scrollWheelZoom={false}
           className="w-full h-full bg-[#ebdcb9]"
         >
-          {/* Added noWrap={true} to stop Leaflet from painting secondary duplicate continents on drag loops */}
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png"
@@ -77,7 +72,7 @@ export default function AntiqueMap({ expeditions }: { expeditions: ExpeditionMar
                     <img src={exp.image} alt={exp.title} className="w-full h-full object-cover" />
                   </div>
                   
-                  <h4 className="font-zen uppercase text-xs tracking-wider border-b border-[#4a321a]/20 pb-0.5 mb-0.5 font-bold truncate">
+                  <h4 className="font-zen uppercase text-xs text-pretty tracking-wider border-b border-[#4a321a]/20 pb-0.5 mb-0.5 font-bold truncate">
                     {exp.title}
                   </h4>
                   
